@@ -520,7 +520,7 @@ for (let i = 0; i < nextChildren.length; i++) {
 }
 ```
 
-我们先找到当前遍历到的节点的前一个节点，即 `nextChildren[i - 1]`，接着找到该节点所对应真实 DOM 的下一个子节点作为 `refNode`，即 `nextChildren[i - 1].el.nextSibling`，但是由于当前遍历到的节点有可能是新 `children` 的第一个节点，这时 `i - 1 < 0`，这将导致 `nextChildren[i - 1]` 不存在，所以当 `i - 1 < 0` 时，我们就知道**新的节点是作为第一个节点而存在的**，这时我们只需要把新的节点插入到最前面即可，所以我们使用 `prevChildren[0].el` 作为 `refNode`。最后调用 `mount` 函数挂载新节点时，我们为其传递了第四个参数 `refNode`，当 `refNode` 存在时，我们应该使用 `insertBefore` 方法代替 `appendChild` 方法，这就需要我们修改之前实现的 `mount` 函数了 `mountElement` 函数，为它们添加第四个参数，如下：
+我们先找到当前遍历到的节点的前一个节点，即 `nextChildren[i - 1]`，接着找到该节点所对应真实 DOM 的下一个子节点作为 `refNode`，即 `nextChildren[i - 1].el.nextSibling`，但是由于当前遍历到的节点有可能是新 `children` 的第一个节点，这时 `i - 1 < 0`，这将导致 `nextChildren[i - 1]` 不存在，所以当 `i - 1 < 0` 时，我们就知道**新的节点是作为第一个节点而存在的**，这时我们只需要把新的节点插入到最前面即可，所以我们使用 `prevChildren[0].el` 作为 `refNode`。最后调用 `mount` 函数挂载新节点时，我们为其传递了第四个参数 `refNode`，当 `refNode` 存在时，我们应该使用 `insertBefore` 方法代替 `appendChild` 方法，这就需要我们修改之前实现的 `mount` 函数和 `mountElement` 函数，为它们添加第四个参数，如下：
 
 ```js {2,6,13,16}
 // mount 函数
